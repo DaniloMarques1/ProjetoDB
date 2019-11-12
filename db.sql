@@ -153,3 +153,11 @@ CREATE TABLE transferencia(
 	CONSTRAINT fk_transferencia_renavem FOREIGN KEY(renavam) REFERENCES veiculos,
 	CONSTRAINT fk_transferencia_proprietario FOREIGN KEY(idProprietario) REFERENCES Proprietario
 ); 
+
+
+INSERT INTO estado VALUES('PE', 'Pernambuco');
+INSERT INTO estado VALUES('PB', 'Paraiba');
+INSERT INTO estado VALUES('CE', 'Ceará');
+INSERT INTO estado VALUES('BA', 'Bahia');
+INSERT INTO estado VALUES('SP', 'São Paulo');
+
