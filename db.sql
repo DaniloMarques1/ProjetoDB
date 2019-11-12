@@ -46,18 +46,22 @@ CREATE TABLE Proprietario(
 	CONSTRAINT ck_situacaoCNH CHECK(situacaoCNH = 'R' or situacaoCNH = 'S')
 );
 
--- NO DICIONARIO É UM INTEIRO MAS ESTA SENDO USADO (NO DICIONARIO) COMO FOREIGN KEY COMO CHAR
-CREATE TABLE categoria_veiculos(
-	idCategoria serial NOT NULL,
-	nome varchar(30) NOT NULL,
-	CONSTRAINT pk_categoriaVeiculo PRIMARY KEY(idCategoria)
-);
+
 
 --Especifica a categoria de veiculos
 CREATE TABLE especie(
 	idEspecie serial NOT NULL,
 	descricao varchar(30) NOT NULL,
 	CONSTRAINT pk_especie PRIMARY KEY(idEspecie)
+);
+
+-- NO DICIONARIO É UM INTEIRO MAS ESTA SENDO USADO (NO DICIONARIO) COMO FOREIGN KEY COMO CHAR
+CREATE TABLE categoria_veiculos(
+	idCategoria serial NOT NULL,
+	descricao varchar(30) NOT NULL,
+	idEspecie int NOT NULL,
+	CONSTRAINT pk_categoriaVeiculo PRIMARY KEY(idCategoria),
+	CONSTRAINT fk_categoria_veiculos_especie PRIMARY KEY(idEspecie)
 );
 
 CREATE TABLE tipo(
@@ -216,4 +220,18 @@ INSERT INTO tipo VALUES(16, 'furgão');
 
 
 
+--ESPECIE DE VEICULOS
+INSERT INTO especie VALUES(1, 'De passageiros');
+INSERT INTO especie VALUES(2, 'De carga');
+INSERT INTO especie VALUES(3, 'Misto');
+INSERT INTO especie VALUES(4, 'De competição');
+INSERT INTO especie VALUES(5, 'De Tração');
+INSERT INTO especie VALUES(6, 'Especial');
+INSERT INTO especie VALUES(7, 'De coleção');
 
+--CATEGORIA DE VEICULOS
+INSERT INTO categoria_veiculos VALUES(1, 'Particular', 6);
+INSERT INTO categoria_veiculos VALUES(2, 'Oficial', 1);
+INSERT INTO categoria_veiculos VALUES(3, 'Aprendizagem', 3);
+INSERT INTO categoria_veiculos VALUES(4, 'Aluguel', 6);
+INSERT INTO categoria_veiculos VALUES(5, 'Representação Diplomática', 6);
