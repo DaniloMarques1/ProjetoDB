@@ -154,10 +154,66 @@ CREATE TABLE transferencia(
 	CONSTRAINT fk_transferencia_proprietario FOREIGN KEY(idProprietario) REFERENCES Proprietario
 ); 
 
-
+--ESTADOS
 INSERT INTO estado VALUES('PE', 'Pernambuco');
 INSERT INTO estado VALUES('PB', 'Paraiba');
 INSERT INTO estado VALUES('CE', 'Ceará');
 INSERT INTO estado VALUES('BA', 'Bahia');
 INSERT INTO estado VALUES('SP', 'São Paulo');
+
+--CIDADES
+INSERT INTO cidade VALUES(1, 'Recife', 'PE');
+INSERT INTO cidade VALUES(2, 'Goiana', 'PE');
+INSERT INTO cidade VALUES(3, 'João Pessoa', 'PB');
+INSERT INTO cidade VALUES(4, 'São Paulo', 'SP');
+INSERT INTO cidade VALUES(5, 'Sapé', 'PB');
+INSERT INTO cidade VALUES(6, 'Olinda', 'PE');
+INSERT INTO cidade VALUES(7, 'Osasco', 'SP');
+INSERT INTO cidade VALUES(8, 'Porto Seguro', 'BA');
+INSERT INTO cidade VALUES(9, 'Ilhéus', 'BA');
+INSERT INTO cidade VALUES(10, 'Feira de Santana', 'BA');
+INSERT INTO cidade VALUES(11, 'Fortaleza', 'CE');
+INSERT INTO cidade VALUES(12, 'Juazeiro do Norte', 'CE');
+
+--CATEGORIAS
+INSERT INTO categoria_cnh VALUES('AAC', 'Habilita pessoas conduzam veículos de duas rodas com até 50 cm3 de cilindrada, as conhecidas “cinquentinhas”.');
+INSERT INTO categoria_cnh VALUES('A', 'abilita a conduzir veículos de duas ou três rodas, com mais que 50 de cilindrada. Além disso, também é possível conduzir os ciclomotores da categoria ACC');
+INSERT INTO categoria_cnh VALUES('B', 'Habilita o condutor a conduzir veículos de quatro rodas com até 3,5 toneladas de peso bruto total e capacidade para até oito passageiros, além do motorista (nove ocupantes no total). Quadriciclos estão inclusos nesta classe.
+');
+INSERT INTO categoria_cnh VALUES('C', 'Habilita o condutor a dirigir todos os tipos de automóveis da categoria B, e também os veículos de carga, não articulados, com mais de 3,5 toneladas de peso bruto total. São exemplos os caminhões, tratores, máquinas agrícolas e de movimentação de carga.');
+INSERT INTO categoria_cnh VALUES('D', 'Habilita o condutor a dirigir veículos para o transporte de passageiros que acomodem mais de 8 passageiros. Aqui, entram os ônibus, micro-ônibus e vans. Com ela, o condutor também pode comandar todos os veículos inclusos nos tipos de CNH B e C.
+');
+INSERT INTO categoria_cnh VALUES('E', 'todos os veículos inclusos nos tipos de CNH B, C e D. Além disso, ele também pode dirigir veículos com unidades acopladas que excedam 6 toneladas. Aqui estão as carretas e caminhões com reboques e semirreboques articulados. Por fim, é necessário ter a carteira E para conduzir carros puxando trailers.
+');
+
+--FABRICANTES
+INSERT INTO marca VALUES(1, 'Chevrolet', 'Estados Unidos');
+INSERT INTO marca VALUES(2, 'Cadillac', 'Estados Unidos');
+INSERT INTO marca VALUES(3, 'Holden', 'Australia');
+INSERT INTO marca VALUES(4, 'Pontiac', 'Estados Unidos');
+
+--TIPOS
+INSERT INTO tipo VALUES(1, 'automóvel');
+INSERT INTO tipo VALUES(2, 'motocicleta');
+INSERT INTO tipo VALUES(3, 'motoneta');
+INSERT INTO tipo VALUES(4, 'triciclo');
+INSERT INTO tipo VALUES(5, 'quadriciclo');
+INSERT INTO tipo VALUES(6, 'microônibus');
+INSERT INTO tipo VALUES(7, 'ônibus');
+INSERT INTO tipo VALUES(8, 'reboque');
+INSERT INTO tipo VALUES(9, 'charrete');
+INSERT INTO tipo VALUES(10, 'caminhonete');
+INSERT INTO tipo VALUES(11, 'caminhão');
+INSERT INTO tipo VALUES(12, 'carroça');
+INSERT INTO tipo VALUES(13, 'trator de rodas');
+INSERT INTO tipo VALUES(14, 'trator de esteira');
+INSERT INTO tipo VALUES(15, 'trator misto');
+INSERT INTO tipo VALUES(16, 'furgão');
+
+
+-- MODELO DE CARRO! QUE DIABO É ISSO
+-- ....
+
+
+
 
