@@ -189,6 +189,11 @@ INSERT INTO categoria_cnh VALUES('D', 'Habilita o condutor a dirigir veículos p
 ');
 INSERT INTO categoria_cnh VALUES('E', 'todos os veículos inclusos nos tipos de CNH B, C e D. Além disso, ele também pode dirigir veículos com unidades acopladas que excedam 6 toneladas. Aqui estão as carretas e caminhões com reboques e semirreboques articulados. Por fim, é necessário ter a carteira E para conduzir carros puxando trailers.
 ');
+INSERT INTO categoria_cnh VALUES('AB', 'Todos os veiculos das categorias A e B.');
+INSERT INTO categoria_cnh VALUES('AC', 'Todos os veiculos das categorias A e C.');
+INSERT INTO categoria_cnh VALUES('AD', 'Todos os veiculos das categorias A e D.');
+INSERT INTO categoria_cnh VALUES('AE', 'Todos os veiculos das categorias A e E.');
+
 
 --FABRICANTES
 INSERT INTO marca VALUES(1, 'Chevrolet', 'Estados Unidos');
@@ -216,7 +221,7 @@ INSERT INTO tipo VALUES(16, 'furgão');
 
 
 -- MODELO DE CARRO! QUE DIABO É ISSO
--- ....
+-- .... CHEVROLET - CELTA
 
 
 
@@ -235,3 +240,39 @@ INSERT INTO categoria_veiculos VALUES(2, 'Oficial', 1);
 INSERT INTO categoria_veiculos VALUES(3, 'Aprendizagem', 3);
 INSERT INTO categoria_veiculos VALUES(4, 'Aluguel', 6);
 INSERT INTO categoria_veiculos VALUES(5, 'Representação Diplomática', 6);
+
+--RENAVAN TRIGGER
+CREATE TRIGGER renavam
+BEFORE INSERT ON veiculos
+FOR EACH ROW
+EXECUTE PROCEDURE funcRevam();
+
+CREATE OR REPLACE FUNCTION funcRevam()
+RETURNS TRIGGER AS $$
+DECLARE
+	fator_mult char(10) := '3298765432';
+	seq varchar(11) := LPAD(nextval('seq')::varchar(10), 10, '0');
+	size int := 10;
+	i int := 1;
+	fm int := '0'; -- valor do fator_mult
+	sq int := '0'; -- valor do seq
+	tot int := 0;  -- soma da mutiplicacao do seq pelo fator_mult
+BEGIN
+	WHILE i < size LOOP
+		-- RAISE NOTICE '% ', i;
+		fm := SUBSTRING(fator_mult, i, 1)::int;
+		sq := SUBSTRING(seq, i, 1);
+		tot = tot + (fm * sq);
+		i := i + 1;
+	END LOOP;
+	tot := tot * 10;
+	tot := MOD(tot, 11);
+
+	IF tot = 10 THEN
+		tot := 0;
+	END IF;
+
+	NEW.renavam = CONCAT(seq, tot);
+	return NEW;
+END; $$
+LANGUAGE plpgsql;
