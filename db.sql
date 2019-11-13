@@ -12,7 +12,7 @@ CREATE TABLE Estado(
 
 --NOME É PK E FK????
 CREATE TABLE Cidade(
-	idCidade char(3) NOT NULL,
+	idCidade SERIAL NOT NULL,
 	nome varchar(50) NOT NULL,
 	uf char(2) NOT NULL,
 	CONSTRAINT pk_cidade PRIMARY KEY(idCidade),
@@ -29,7 +29,7 @@ CREATE TABLE categoria_cnh(
 -- Tabela proprietario - todos que ja foram ou são proprietarios de veiculos
 
 --O CAMPO ESTADO É NECESSARIO CONSIDERANDO QUE ELE ESTA PRESENTE NA TABELA DA CIDADE? (E ja temos o id da cidade)
-CREATE TABLE Proprietario(
+CREATE TABLE Condutor(
 	idCadastro SERIAL NOT NULL,
 	cpf char(11) NOT NULL,
 	nome varchar(50) NOT NULL,
@@ -37,7 +37,7 @@ CREATE TABLE Proprietario(
 	idCategoriaCNH char(3) NOT NULL,
 	endereco varchar(50) NOT NULL,
 	bairro varchar(30) NOT NULL,
-	idCidade char(3) NOT NULL,
+	idCidade int NOT NULL,
 	situacaoCNH char(1) NOT NULL DEFAULT 'R',
 	CONSTRAINT pk_proprietario_cadastro PRIMARY KEY(idCadastro),
 	CONSTRAINT ck_cpf CHECK(cpf ~ '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]'),
@@ -61,7 +61,7 @@ CREATE TABLE categoria_veiculos(
 	descricao varchar(30) NOT NULL,
 	idEspecie int NOT NULL,
 	CONSTRAINT pk_categoriaVeiculo PRIMARY KEY(idCategoria),
-	CONSTRAINT fk_categoria_veiculos_especie PRIMARY KEY(idEspecie)
+	CONSTRAINT fk_categoria_veiculos_especie FOREIGN KEY(idEspecie) REFERENCES especie
 );
 
 CREATE TABLE tipo(
@@ -97,14 +97,14 @@ CREATE TABLE veiculos(
 	idCategoria int NOT NULL,
 	idProprietario int NOT NULL,
 	idModelo int NOT NULL,
-	idCidade char(3) NOT NULL,
-	datacadastro date NOT NULL,
+	idCidade int NOT NULL,
+	datacompra date NOT NULL,
 	dataaquisicao date NOT NULL,
 	valor real NOT NULL,
 	situacao char(1) DEFAULT 'R',
 	CONSTRAINT pk_renavem PRIMARY KEY(renavam),
 	CONSTRAINT fk_veiculo_categoria FOREIGN KEY(idCategoria) REFERENCES categoria_veiculos,
-	CONSTRAINT fk_veiculo_proprietario FOREIGN KEY(idProprietario) REFERENCES Proprietario,
+	CONSTRAINT fk_veiculo_proprietario FOREIGN KEY(idProprietario) REFERENCES Condutor,
 	CONSTRAINT fk_veiculo_modelo FOREIGN KEY(idModelo) REFERENCES modelo,
 	CONSTRAINT fk_veiculo_cidade FOREIGN KEY(idCidade) REFERENCES cidade,
 	CONSTRAINT ck_veiculo_situacao CHECK(situacao = 'R' or situacao = 'I' or situacao = 'B')
@@ -136,14 +136,15 @@ CREATE TABLE multa(
 	idcondutor int NOT NULL,
 	dataInfracao date NOT NULL,
 	dataVencimento date NOT NULL,
+	datapagamento date NOT NULL,
 	valor numeric NOT NULL,
 	juros numeric NOT NULL DEFAULT 0,
-	valorFinal numeric NOT NULL DEFAULT 0, -- valor calculado, um trigger? funcao? FICA AI A REFLEXÃO!
-	pago char(1) DEFAULT 'S',
+	valorFinal numeric NOT NULL DEFAULT 0,
+	pago char(1) DEFAULT 'N',
 	CONSTRAINT pk_multa PRIMARY KEY(idmulta),
 	CONSTRAINT fk_multa_renavem FOREIGN KEY(renavam) REFERENCES veiculos,
 	CONSTRAINT fk_multa_infracao FOREIGN KEY(idinfracao) REFERENCES infracao,
-	CONSTRAINT fk_multa_proprietario FOREIGN KEY(idcondutor) REFERENCES Proprietario,
+	CONSTRAINT fk_multa_proprietario FOREIGN KEY(idcondutor) REFERENCES Condutor,
 	CONSTRAINT ck_multa_pago CHECK(pago = 'S' or pago = 'N')
 );
 
@@ -155,7 +156,7 @@ CREATE TABLE transferencia(
 	dataVenda date,
 	CONSTRAINT pk_historico PRIMARY KEY(idhistorico),
 	CONSTRAINT fk_transferencia_renavem FOREIGN KEY(renavam) REFERENCES veiculos,
-	CONSTRAINT fk_transferencia_proprietario FOREIGN KEY(idProprietario) REFERENCES Proprietario
+	CONSTRAINT fk_transferencia_proprietario FOREIGN KEY(idProprietario) REFERENCES Condutor
 ); 
 
 --ESTADOS
