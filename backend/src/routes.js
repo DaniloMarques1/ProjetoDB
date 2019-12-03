@@ -6,6 +6,9 @@ const CondutorController = require('./controllers/CondutorController');
 const InfracoesController = require('./controllers/InfracoesController');
 const ModeloController = require('./controllers/ModeloController');
 const LicenciamentoController = require('./controllers/LicenciamentoController');
+const CategoryController = require('./controllers/CategoryController');
+const StateController = require('./controllers/StateController');
+const CityController = require('./controllers/CityController');
 
 const routes = Router();
 
@@ -34,5 +37,11 @@ routes.get('/condutor/:idcadastro', CondutorController.show);
 routes.get('/infracoes', InfracoesController.index);
 
 routes.get('/modelos', ModeloController.index);
+
+routes.get('/category', CategoryController.index);
+
+routes.get('/state', StateController.index);
+
+routes.get('/city/:estado', CityController.index);
 
 module.exports = routes;
