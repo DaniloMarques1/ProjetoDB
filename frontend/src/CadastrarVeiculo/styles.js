@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export const Main = styled.main `
     display: flex;
-    height: 80vh;
+    height: 100vh;
+    margin-top: 80px;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -32,7 +33,7 @@ export const Form = styled.form `
 `;
 
 export const Label = styled.label `
-    font-size: 13px;
+    font-size: 16px;
     margin-top: 2px;
     margin-bottom: 2px;
 `;
@@ -40,16 +41,18 @@ export const Label = styled.label `
 export const Input = styled.input `
     padding: 7px;
     width: 100%;
+    margin-bottom: 5px;
 `
 
 export const Select = styled.select `
     width: 100%;
-    padding: 7px;
+    padding: 4px;
+    margin-bottom: 5px;
     border: none;
     background-color: #fff;
 `;
 
 export const Title = styled.h2 `
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     color: #677EB9;
 `;

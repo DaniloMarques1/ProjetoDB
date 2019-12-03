@@ -14,22 +14,73 @@ import {
 export default function CadastrarVeiculo() {
     const [placa, setPlaca] = useState('');
     const [ano, setAno] = useState('');
-    const [categoria, setCategoria] = useState('');
+    const [categorias, setCategorias] = useState([]);
+    const [selectedCategoria, setSelectedCategoria] = useState('');
     const [proprietario, setProprietario] = useState('');
-    const [modelo, setModelo] = useState('');
-    const [cidade, setCidade] = useState('');
+    const [modelos, setModelos] = useState([]);
+    const [selectedModelo, setSelectedModelo] = useState('');
+    const [cidades, setCidades] = useState([]);
+    const [selectedCidade, setSelectedCidade] = useState('');
+    const [estados, setEstados] = useState([])
+    
     const [valor, setValor] = useState('');
     
+    useEffect(() => {
+        async function getCategorias() {
+            try {
+                const response = await api.get('/category');
+                setCategorias(response.data)
+            } catch(e) {
+                console.log(e);
+            }
+        }
+        getCategorias();
+    }, []);
+
+    useEffect(() => {
+        async function getModelos() {
+            try {
+                const response = await api.get('/modelos');
+                setModelos(response.data);
+            } catch(e) {
+                console.log(e);
+            }
+        }
+        getModelos();
+    }, []);
+
+    useEffect(() => {
+        async function getStates() {
+            try {
+                const response = await api.get('/state');
+                setEstados(response.data);
+            } catch(e) {
+                console.log(e);
+            }
+        }
+        getStates();
+    }, []);
+    
+    async function handleGetCity(e) {
+        const estado = e.target.value;
+        try {
+            const response = await api.get(`/city/${estado}`);
+            setCidades(response.data);
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
     async function handleCadastrarVeiculo(e) {       
         e.preventDefault();
         try {
             const response = await api.post('/vehicle', {
                 placa,
                 ano,
-                idcategoria: categoria,
+                idcategoria: selectedCategoria,
                 idproprietario: proprietario,
-                idmodelo: modelo,
-                idcidade: cidade,
+                idmodelo: selectedModelo,
+                idcidade: selectedCidade,
                 valor
             });
             alert('Veiculo cadastrado com sucesso!');
@@ -55,18 +106,44 @@ export default function CadastrarVeiculo() {
                     <Label>Ano:</Label>
                     <Input value={ano} onChange={(e) => setAno(e.target.value)} type='number' placeholder='Ano do carro'/>
                     
-                    <Label>Categoria:</Label>
-                    <Input value={categoria} onChange={(e) => setCategoria(e.target.value)} type='number' placeholder='Categoria'/>
-                    
                     <Label>Proprietario:</Label>
                     <Input value={proprietario} onChange={(e) => setProprietario(e.target.value)} type='number' placeholder='Id do proprietario'/>
+
+
+                    <Label>Categoria:</Label>
+                    <Select value={selectedCategoria} onChange={(e) => setSelectedCategoria(e.target.value)}>
+                        <option value='-1'>Selecione uma das opcoes!</option>
+                        {categorias.map(categoria => (
+                            <option key={categoria.idcategoria} value={categoria.idcategoria}>{categoria.descricao}</option>
+                        ))}
+                    </Select>
+                    
                     
                     <Label>modelo:</Label>
-                    <Input value={modelo} onChange={(e) => setModelo(e.target.value)} type='number' placeholder='Modelo'/>
-                    
+                    <Select value={selectedModelo} onChange={(e) => setSelectedModelo(e.target.value)}>
+                            <option value='-1'>Selecione uma das opcoes!</option>
+                            {modelos.map(modelo => (
+                                <option key={modelo.idmodelo} value={modelo.idmodelo}>{modelo.denominacao}</option>
+                            ))}
+                    </Select>
+
+                    <Label>Estados:</Label>
+                    <Select onChange={handleGetCity}>
+                            <option value='-1'>Selecione uma das opcoes!</option>
+                            {estados.map(estado => (
+                                <option key={estado.uf} value={estado.uf}>{estado.nome}</option>
+                            ))}
+                    </Select>
+
                     <Label>Cidade:</Label>
-                    <Input value={cidade} onChange={(e) => setCidade(e.target.value)} type='number' placeholder='id da cidade'/>
-                    
+                    <Select  onChange={(e) => setSelectedCidade(e.target.value)}>
+                            <option value='-1'>Selecione uma das opcoes!</option>
+                            {cidades.map(cidade => (
+                                <option key={cidade.idcidade} value={cidade.idcidade}>{cidade.nome}</option>
+                            ))}
+                    </Select>
+
+
                     <Label>Valor:</Label>
                     <Input value={valor} onChange={(e) => setValor(e.target.value)} type='number' placeholder='Valor do carro'/>
                     
