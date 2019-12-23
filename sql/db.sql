@@ -175,7 +175,7 @@ BEGIN
 	IF tot = 10 THEN
 		tot := 0;
 	END IF;
-
+	--TOT = DIGITO
 	NEW.renavam = CONCAT(seq, tot);
 	return NEW;
 END; $$
@@ -206,11 +206,11 @@ FOR ROW
 EXECUTE PROCEDURE fTransferencia();
 
 --TRIGGER PARA O LICENCIAMENTO DE VEICULOS
-CREATE OR REPLACE FUNCTION fLicenciamento()
+CREATE OR REPLACE FUNCTION fLicenciamento(ano int)
 RETURNS TRIGGER AS  $$
 DECLARE 	
 	placa integer := SUBSTRING(new.placa, char_length(new.placa), 1)::int+2;
-	anoL integer := EXTRACT(year from now());
+	anoL integer := ano
 	dataVn date := fDataVencimento(placa,anoL);
 BEGIN
 IF(TG_OP='INSERT') THEN
@@ -324,16 +324,6 @@ BEGIN
 END ; $$
 LANGUAGE plpgsql;
 
-CREATE OR REPLACE FUNCTION jurosADD(dPagamento date, dVencimento date, valor integer)
-RETURNS integer AS $$
-BEGIN
-	IF (dPagamento > dVencimento) THEN
-		return valor*0.01;
-	ELSE
-		return 0;
-	END IF;
-END; $$
-LANGUAGE plpgsql;
 
 
 --FUNÇÂO: Inserção na tabela Multa
@@ -383,6 +373,18 @@ CREATE TRIGGER tCNH
 AFTER INSERT ON multa
 FOR ROW
 EXECUTE PROCEDURE fCNH();
+
+CREATE OR REPLACE FUNCTION calcularValorFinal(valor numeric, data date)
+RETURNS numeric AS $$
+DECLARE
+	vf numeric := 0;
+	dias int := 0;
+BEGIN
+	select (current_date - data)::int into dias;
+	vf := valor + (dias * (valor * 0.01));
+	return vf;
+END ; $$
+LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION pagarMulta()
 RETURNS TRIGGER AS $$
@@ -6378,7 +6380,6 @@ insert into veiculo values(1, 'MRB2705', 2018, 1, 148, 9, 3326, '07/01/2019', '0
 insert into veiculo values(1, 'HZN1538', 2019, 1, 181, 1, 445, '08/04/2019', '08/04/2019', 90000, 'R');
 insert into veiculo values(1, 'JZB5021', 2019, 1, 191, 23, 2113, '14/08/2019', '14/08/2019', 120000, 'R');
 insert into veiculo values(1, 'JZB5024', 2019, 1, 191, 23, 2113, '14/08/2019', '14/08/2019', 120000, 'R');
-
 
 
 INSERT INTO infracao(idinfracao, descricao, valor, pontos) VALUES(1, 'Gravissima', 293.94, 7);

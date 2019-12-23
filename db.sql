@@ -149,13 +149,13 @@ CREATE TABLE multa(
 );
 
 CREATE TABLE transferencia(
-	idhistorico int NOT NULL,
+	idhistorico serial NOT NULL,
 	renavam char(13) NOT NULL,
 	idProprietario int NOT NULL,
 	dataCompra date NOT NULL,
 	dataVenda date,
 	CONSTRAINT pk_historico PRIMARY KEY(idhistorico),
-	CONSTRAINT fk_transferencia_renavem FOREIGN KEY(renavam) REFERENCES veiculos,
+	CONSTRAINT fk_transferencia_renavem FOREIGN KEY(renavam) REFERENCES veiculo,
 	CONSTRAINT fk_transferencia_proprietario FOREIGN KEY(idProprietario) REFERENCES Condutor
 ); 
 
@@ -241,6 +241,8 @@ INSERT INTO categoria_veiculos VALUES(2, 'Oficial', 1);
 INSERT INTO categoria_veiculos VALUES(3, 'Aprendizagem', 3);
 INSERT INTO categoria_veiculos VALUES(4, 'Aluguel', 6);
 INSERT INTO categoria_veiculos VALUES(5, 'Representação Diplomática', 6);
+
+CREATE SEQUENCE seq START 1000;
 
 --RENAVAN TRIGGER
 CREATE TRIGGER renavam
